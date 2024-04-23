@@ -12,4 +12,4 @@ laravel_php:
   networks:
     - laravel
   depends_on:
-    - laravel_mysql
+    - laravel_mys
