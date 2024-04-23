@@ -1,0 +1,15 @@
+version:3
+
+laravel_php:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  container_name: laravel_php
+  volumes:
+    - .:/var/www/html
+  ports:
+    - "8000:80"
+  networks:
+    - laravel
+  depends_on:
+    - laravel_mysql
