@@ -1,0 +1,237 @@
+<?php $__env->startSection('content'); ?>
+
+<div class="card">
+    <div class="card-header">
+        <?php echo e(trans('global.create')); ?> <?php echo e(trans('cruds.profile.title_singular')); ?>
+
+    </div>
+
+    <div class="card-body">
+        <form method="POST" action="<?php echo e(route("admin.profiles.store")); ?>" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
+            <div class="form-group">
+                <label class="required" for="name"><?php echo e(trans('cruds.profile.fields.name')); ?></label>
+                <input class="form-control <?php echo e($errors->has('name') ? 'is-invalid' : ''); ?>" type="text" name="name" id="name" value="<?php echo e(old('name', '')); ?>" required>
+                <?php if($errors->has('name')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('name')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.name_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label for="fullname"><?php echo e(trans('cruds.profile.fields.fullname')); ?></label>
+                <input class="form-control <?php echo e($errors->has('fullname') ? 'is-invalid' : ''); ?>" type="text" name="fullname" id="fullname" value="<?php echo e(old('fullname', '')); ?>">
+                <?php if($errors->has('fullname')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('fullname')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.fullname_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="address"><?php echo e(trans('cruds.profile.fields.address')); ?></label>
+                <input class="form-control <?php echo e($errors->has('address') ? 'is-invalid' : ''); ?>" type="text" name="address" id="address" value="<?php echo e(old('address', '')); ?>" required>
+                <?php if($errors->has('address')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('address')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.address_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="phone"><?php echo e(trans('cruds.profile.fields.phone')); ?></label>
+                <input class="form-control <?php echo e($errors->has('phone') ? 'is-invalid' : ''); ?>" type="text" name="phone" id="phone" value="<?php echo e(old('phone', '')); ?>" required>
+                <?php if($errors->has('phone')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('phone')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.phone_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="email"><?php echo e(trans('cruds.profile.fields.email')); ?></label>
+                <input class="form-control <?php echo e($errors->has('email') ? 'is-invalid' : ''); ?>" type="email" name="email" id="email" value="<?php echo e(old('email')); ?>" required>
+                <?php if($errors->has('email')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('email')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.email_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label for="description"><?php echo e(trans('cruds.profile.fields.description')); ?></label>
+                <textarea class="form-control ckeditor <?php echo e($errors->has('description') ? 'is-invalid' : ''); ?>" name="description" id="description"><?php echo old('description'); ?></textarea>
+                <?php if($errors->has('description')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('description')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.description_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label for="image"><?php echo e(trans('cruds.profile.fields.image')); ?></label>
+                <div class="needsclick dropzone <?php echo e($errors->has('image') ? 'is-invalid' : ''); ?>" id="image-dropzone">
+                </div>
+                <?php if($errors->has('image')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('image')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.image_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="faximile"><?php echo e(trans('cruds.profile.fields.faximile')); ?></label>
+                <input class="form-control <?php echo e($errors->has('faximile') ? 'is-invalid' : ''); ?>" type="text" name="faximile" id="faximile" value="<?php echo e(old('faximile', '')); ?>" required>
+                <?php if($errors->has('faximile')): ?>
+                    <div class="invalid-feedback">
+                        <?php echo e($errors->first('faximile')); ?>
+
+                    </div>
+                <?php endif; ?>
+                <span class="help-block"><?php echo e(trans('cruds.profile.fields.faximile_helper')); ?></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">
+                    <?php echo e(trans('global.save')); ?>
+
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script>
+    $(document).ready(function () {
+  function SimpleUploadAdapter(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+      return {
+        upload: function() {
+          return loader.file
+            .then(function (file) {
+              return new Promise(function(resolve, reject) {
+                // Init request
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '<?php echo e(route('admin.profiles.storeCKEditorImages')); ?>', true);
+                xhr.setRequestHeader('x-csrf-token', window._token);
+                xhr.setRequestHeader('Accept', 'application/json');
+                xhr.responseType = 'json';
+
+                // Init listeners
+                var genericErrorText = `Couldn't upload file: ${ file.name }.`;
+                xhr.addEventListener('error', function() { reject(genericErrorText) });
+                xhr.addEventListener('abort', function() { reject() });
+                xhr.addEventListener('load', function() {
+                  var response = xhr.response;
+
+                  if (!response || xhr.status !== 201) {
+                    return reject(response && response.message ? `${genericErrorText}\n${xhr.status} ${response.message}` : `${genericErrorText}\n ${xhr.status} ${xhr.statusText}`);
+                  }
+
+                  $('form').append('<input type="hidden" name="ck-media[]" value="' + response.id + '">');
+
+                  resolve({ default: response.url });
+                });
+
+                if (xhr.upload) {
+                  xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                      loader.uploadTotal = e.total;
+                      loader.uploaded = e.loaded;
+                    }
+                  });
+                }
+
+                // Send request
+                var data = new FormData();
+                data.append('upload', file);
+                data.append('crud_id', '<?php echo e($profile->id ?? 0); ?>');
+                xhr.send(data);
+              });
+            })
+        }
+      };
+    }
+  }
+
+  var allEditors = document.querySelectorAll('.ckeditor');
+  for (var i = 0; i < allEditors.length; ++i) {
+    ClassicEditor.create(
+      allEditors[i], {
+        extraPlugins: [SimpleUploadAdapter]
+      }
+    );
+  }
+});
+</script>
+
+<script>
+    Dropzone.options.imageDropzone = {
+    url: '<?php echo e(route('admin.profiles.storeMedia')); ?>',
+    maxFilesize: 2, // MB
+    acceptedFiles: '.jpeg,.jpg,.png,.gif',
+    maxFiles: 1,
+    addRemoveLinks: true,
+    headers: {
+      'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+    },
+    params: {
+      size: 2,
+      width: 4096,
+      height: 4096
+    },
+    success: function (file, response) {
+      $('form').find('input[name="image"]').remove()
+      $('form').append('<input type="hidden" name="image" value="' + response.name + '">')
+    },
+    removedfile: function (file) {
+      file.previewElement.remove()
+      if (file.status !== 'error') {
+        $('form').find('input[name="image"]').remove()
+        this.options.maxFiles = this.options.maxFiles + 1
+      }
+    },
+    init: function () {
+<?php if(isset($profile) && $profile->image): ?>
+      var file = <?php echo json_encode($profile->image); ?>
+
+          this.options.addedfile.call(this, file)
+      this.options.thumbnail.call(this, file, file.preview ?? file.preview_url)
+      file.previewElement.classList.add('dz-complete')
+      $('form').append('<input type="hidden" name="image" value="' + file.file_name + '">')
+      this.options.maxFiles = this.options.maxFiles - 1
+<?php endif; ?>
+    },
+    error: function (file, response) {
+        if ($.type(response) === 'string') {
+            var message = response //dropzone sends it's own error messages in string
+        } else {
+            var message = response.errors.file
+        }
+        file.previewElement.classList.add('dz-error')
+        _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
+        _results = []
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            node = _ref[_i]
+            _results.push(node.textContent = message)
+        }
+
+        return _results
+    }
+}
+
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/resources/views/admin/profiles/create.blade.php ENDPATH**/ ?>
